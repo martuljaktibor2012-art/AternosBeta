@@ -1,47 +1,87 @@
-import { Menu, Bell, Search, User, Cloud } from 'lucide-react';
+import { Power, Users, Clock, Wifi } from 'lucide-react';
 
 interface NavbarProps {
-  onToggleSidebar: () => void;
+  serverStatus: 'online' | 'offline' | 'starting';
+  setServerStatus: (status: 'online' | 'offline' | 'starting') => void;
 }
 
-export default function Navbar({ onToggleSidebar }: NavbarProps) {
+export default function Navbar({ serverStatus, setServerStatus }: NavbarProps) {
+  const handlePowerClick = () => {
+    if (serverStatus === 'offline') {
+      setServerStatus('starting');
+      setTimeout(() => setServerStatus('online'), 3000);
+    } else if (serverStatus === 'online') {
+      setServerStatus('offline');
+    }
+  };
+
   return (
-    <nav className="bg-dark-800 border-b border-dark-700 px-6 py-3 flex items-center justify-between sticky top-0 z-50">
+    <nav className="bg-bg-secondary border-b border-border px-4 py-2.5 flex items-center justify-between sticky top-0 z-50">
       <div className="flex items-center gap-4">
-        <button
-          onClick={onToggleSidebar}
-          className="p-2 rounded-lg hover:bg-dark-700 transition-colors"
-        >
-          <Menu size={20} className="text-dark-300" />
-        </button>
+        {/* Logo */}
         <div className="flex items-center gap-2">
-          <Cloud size={28} className="text-primary-400" />
-          <span className="text-xl font-bold bg-gradient-to-r from-primary-400 to-purple-400 bg-clip-text text-transparent">
-            CloudForge
-          </span>
-        </div>
-      </div>
-
-      <div className="hidden md:flex items-center bg-dark-700 rounded-lg px-4 py-2 w-96">
-        <Search size={16} className="text-dark-400 mr-2" />
-        <input
-          type="text"
-          placeholder="Search servers, domains, services..."
-          className="bg-transparent text-sm text-dark-200 placeholder-dark-400 outline-none w-full"
-        />
-      </div>
-
-      <div className="flex items-center gap-3">
-        <button className="relative p-2 rounded-lg hover:bg-dark-700 transition-colors">
-          <Bell size={20} className="text-dark-300" />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-        </button>
-        <div className="flex items-center gap-2 bg-dark-700 rounded-lg px-3 py-2 cursor-pointer hover:bg-dark-600 transition-colors">
-          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-400 to-purple-500 flex items-center justify-center">
-            <User size={14} className="text-white" />
+          <div className="w-8 h-8 bg-mc-green rounded-sm flex items-center justify-center pixel-border">
+            <span className="text-white font-bold text-sm">M</span>
           </div>
-          <span className="text-sm text-dark-200 hidden sm:block">Admin</span>
+          <span className="text-lg font-bold text-text-primary hidden sm:block">MineHost</span>
         </div>
+
+        {/* Server Name */}
+        <div className="hidden md:flex items-center gap-2 bg-bg-tertiary px-3 py-1.5 rounded-lg border border-border">
+          <span className="text-sm text-text-secondary">Server:</span>
+          <span className="text-sm font-medium text-text-primary">MyMinecraftServer</span>
+        </div>
+      </div>
+
+      {/* Server Status */}
+      <div className="flex items-center gap-4">
+        <div className="hidden sm:flex items-center gap-4 text-xs">
+          <div className="flex items-center gap-1.5 text-text-secondary">
+            <Users size={14} />
+            <span>3/20</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-text-secondary">
+            <Clock size={14} />
+            <span>4h 23m</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-text-secondary">
+            <Wifi size={14} />
+            <span>play.myserver.net</span>
+          </div>
+        </div>
+
+        {/* Status Badge */}
+        <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border ${
+          serverStatus === 'online'
+            ? 'bg-mc-green/10 border-mc-green/30 text-mc-green'
+            : serverStatus === 'starting'
+            ? 'bg-yellow/10 border-yellow/30 text-yellow'
+            : 'bg-red/10 border-red/30 text-red'
+        }`}>
+          <div className={`w-2 h-2 rounded-full ${
+            serverStatus === 'online'
+              ? 'bg-mc-green animate-pulse-green'
+              : serverStatus === 'starting'
+              ? 'bg-yellow animate-pulse'
+              : 'bg-red'
+          }`}></div>
+          <span className="text-xs font-medium capitalize">{serverStatus}</span>
+        </div>
+
+        {/* Power Button */}
+        <button
+          onClick={handlePowerClick}
+          disabled={serverStatus === 'starting'}
+          className={`p-2 rounded-lg transition-all ${
+            serverStatus === 'online'
+              ? 'bg-red/10 hover:bg-red/20 text-red'
+              : serverStatus === 'starting'
+              ? 'bg-yellow/10 text-yellow cursor-not-allowed'
+              : 'bg-mc-green/10 hover:bg-mc-green/20 text-mc-green'
+          }`}
+        >
+          <Power size={20} />
+        </button>
       </div>
     </nav>
   );

@@ -1,90 +1,66 @@
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
-  Server,
-  CreditCard,
-  Activity,
-  HeadphonesIcon,
-  Settings,
-  Shield,
+  Terminal,
+  Users,
   Globe,
-  Database,
+  Package,
+  Puzzle,
+  FolderOpen,
+  Settings,
 } from 'lucide-react';
 
 interface SidebarProps {
-  isOpen: boolean;
+  currentPath: string;
 }
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/servers', icon: Server, label: 'Servers' },
-  { to: '/monitoring', icon: Activity, label: 'Monitoring' },
-  { to: '/pricing', icon: CreditCard, label: 'Pricing' },
-  { to: '/support', icon: HeadphonesIcon, label: 'Support' },
+  { to: '/console', icon: Terminal, label: 'Console' },
+  { to: '/players', icon: Users, label: 'Players' },
+  { to: '/worlds', icon: Globe, label: 'Worlds' },
+  { to: '/software', icon: Package, label: 'Software' },
+  { to: '/plugins', icon: Puzzle, label: 'Plugins' },
+  { to: '/files', icon: FolderOpen, label: 'Files' },
+  { to: '/options', icon: Settings, label: 'Options' },
 ];
 
-const secondaryItems = [
-  { icon: Globe, label: 'Domains' },
-  { icon: Database, label: 'Databases' },
-  { icon: Shield, label: 'Firewall' },
-  { icon: Settings, label: 'Settings' },
-];
-
-export default function Sidebar({ isOpen }: SidebarProps) {
+export default function Sidebar({ currentPath }: SidebarProps) {
   return (
-    <aside
-      className={`bg-dark-800 border-r border-dark-700 transition-all duration-300 ${
-        isOpen ? 'w-64' : 'w-0 overflow-hidden'
-      }`}
-    >
-      <div className="p-4 flex flex-col h-full">
-        <div className="flex-1">
-          <p className="text-xs font-semibold text-dark-400 uppercase tracking-wider px-3 mb-3">
-            Main Menu
-          </p>
-          <nav className="space-y-1">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                    isActive
-                      ? 'bg-primary-600/20 text-primary-300 border border-primary-500/30'
-                      : 'text-dark-300 hover:bg-dark-700 hover:text-dark-100'
-                  }`
-                }
-                end={item.to === '/'}
-              >
-                <item.icon size={18} />
-                <span>{item.label}</span>
-              </NavLink>
-            ))}
-          </nav>
+    <aside className="w-16 bg-bg-secondary border-r border-border flex flex-col items-center py-4">
+      <nav className="flex flex-col gap-2 flex-1">
+        {navItems.map((item) => {
+          const isActive = currentPath === item.to;
+          return (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={`group relative flex items-center justify-center w-10 h-10 rounded-lg transition-all ${
+                isActive
+                  ? 'bg-mc-green/20 text-mc-green'
+                  : 'text-text-muted hover:bg-bg-hover hover:text-text-secondary'
+              }`}
+            >
+              <item.icon size={20} />
+              
+              {/* Tooltip */}
+              <div className="absolute left-full ml-2 px-2 py-1 bg-bg-tertiary border border-border rounded text-xs text-text-primary opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
+                {item.label}
+              </div>
 
-          <p className="text-xs font-semibold text-dark-400 uppercase tracking-wider px-3 mb-3 mt-8">
-            Resources
-          </p>
-          <nav className="space-y-1">
-            {secondaryItems.map((item) => (
-              <button
-                key={item.label}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-dark-300 hover:bg-dark-700 hover:text-dark-100 transition-all w-full text-left"
-              >
-                <item.icon size={18} />
-                <span>{item.label}</span>
-              </button>
-            ))}
-          </nav>
-        </div>
+              {/* Active indicator */}
+              {isActive && (
+                <div className="absolute left-0 w-0.5 h-6 bg-mc-green rounded-r"></div>
+              )}
+            </NavLink>
+          );
+        })}
+      </nav>
 
-        <div className="mt-6 p-4 bg-gradient-to-br from-primary-900/50 to-purple-900/50 rounded-xl border border-primary-700/30">
-          <p className="text-sm font-semibold text-primary-200">Pro Plan Active</p>
-          <p className="text-xs text-dark-400 mt-1">Next billing: Jan 15, 2026</p>
-          <div className="mt-3 w-full bg-dark-700 rounded-full h-2">
-            <div className="bg-gradient-to-r from-primary-400 to-purple-400 h-2 rounded-full w-3/4"></div>
-          </div>
-          <p className="text-xs text-dark-400 mt-1">75% resources used</p>
+      {/* Bottom section */}
+      <div className="flex flex-col gap-2">
+        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-mc-green to-mc-green-dark flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+          <span className="text-white font-bold text-sm">U</span>
         </div>
       </div>
     </aside>
