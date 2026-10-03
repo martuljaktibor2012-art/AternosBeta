@@ -4,8 +4,6 @@
   --color-mc-green: #4caf50;
   --color-mc-green-dark: #388e3c;
   --color-mc-green-light: #66bb6a;
-  --color-mc-dirt: #8b6914;
-  --color-mc-stone: #7f7f7f;
   --color-bg-primary: #121218;
   --color-bg-secondary: #1a1a24;
   --color-bg-tertiary: #22222e;
@@ -16,11 +14,6 @@
   --color-text-primary: #e8e8f0;
   --color-text-secondary: #a0a0b8;
   --color-text-muted: #6a6a82;
-  --color-red: #ef4444;
-  --color-yellow: #f59e0b;
-  --color-blue: #3b82f6;
-  --color-purple: #8b5cf6;
-  --color-orange: #f97316;
 }
 
 html, body {
